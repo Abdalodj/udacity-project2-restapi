@@ -1,5 +1,4 @@
 export const config = {
-  "dev": {
     "dev": {
       "username": process.env.POSTGRES_USERNAME,
       "password": process.env.POSTGRES_PASSWORD,
