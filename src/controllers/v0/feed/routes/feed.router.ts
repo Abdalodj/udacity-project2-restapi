@@ -18,13 +18,43 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', 
+    requireAuth, 
+    async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+            if (!id) {
+                return res.status(400).send("id is required")
+            }
+            const item = await FeedItem.findByPk(id)
+            if (!item) {
+                return res.status(404).send("No feed found!")
+            }
+            res.status(200).send(item)
+        } catch (error) {
+            res.status(500).json({message: "Internal server error", error})
+        }
+})
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.status(500).send("not implemented")
+        try {
+            const { id } = req.params;
+            const { url, caption } = req.body
+            if (!id) {
+                return res.status(400).send("id is required")
+            }
+            const item = await FeedItem.update({ url: url, caption: caption }, { where: { id: id } })
+            if (item[0] <= 0) {
+                return res.status(404).send("No feed found!")
+            }
+            res.status(200).json(item)
+        } catch (err) {
+            res.status(500).json({ msg: "Internal server error", err })
+        }
 });
 
 
