@@ -7,7 +7,7 @@ import fs from "fs"
 const router: Router = Router();
 const c = config.dev;
 
-router.get('', /* requireAuth, */ async (req: Request, res: Response) => {
+router.get('', requireAuth, async (req: Request, res: Response) => {
   try {
     const image_url = req.query.url as string
     console.log(`Call to\n${c.image_proccessor_url}/filteredimage?image_url=${image_url}`);

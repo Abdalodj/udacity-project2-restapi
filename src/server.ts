@@ -22,9 +22,25 @@ const c = config.dev;
 
   //CORS Should be restricted
   app.use(function (req, res, next) {
-    console.log(c.frontent_endpoint);
-    res.header("Access-Control-Allow-Origin", c.frontent_endpoint);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    console.log("------- REQUEST ----------");
+    console.log(req.headers);
+    res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Credentials', 'true');
+      res.header(
+        'Access-Control-Allow-Methods',
+        'GET,HEAD,PUT,PATCH,POST,DELETE'
+      );
+      res.header('Access-Control-Expose-Headers', 'Content-Length');
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, Accept, Authorization, Content-Type, X-Requested-With, Range'
+      );console.log("------- RESPONSE ----------");
+      console.log(res.getHeaders());
+      if (req.method === 'OPTIONS') {
+        return res.send(200);
+      } else {
+        return next();
+      }
     next();
   });
 
