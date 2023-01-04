@@ -17,17 +17,13 @@ const c = config.dev;
 
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
-  
+
   app.use(bodyParser.json());
 
   //CORS Should be restricted
-  app.use(function(req, res, next) {
-    if(c.aws_profile === "DEPLOYED") {
-      res.header("Access-Control-Allow-Origin", c.frontent_endpoint);
-    } else {
-      res.header("Access-Control-Allow-Origin", "http://localhost:8100");
-      res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-    }
+  app.use(function (req, res, next) {
+    console.log(c.frontent_endpoint);
+    res.header("Access-Control-Allow-Origin", c.frontent_endpoint);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
@@ -35,14 +31,14 @@ const c = config.dev;
   app.use('/api/v0/', IndexRouter)
 
   // Root URI call
-  app.get( "/", async ( req, res ) => {
-    res.send( "/api/v0/" );
-  } );
-  
+  app.get("/", async (req, res) => {
+    res.send("/api/v0/");
+  });
+
 
   // Start the Server
-  app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
-  } );
+  app.listen(port, () => {
+    console.log(`server running http://localhost:${port}`);
+    console.log(`press CTRL+C to stop server`);
+  });
 })();
